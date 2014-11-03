@@ -7,9 +7,11 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 
+import com.mycompany.myapp.dao.EventDao;
 import com.mycompany.myapp.domain.CalendarUser;
 import com.mycompany.myapp.domain.Event;
 import com.mycompany.myapp.domain.EventAttendee;
@@ -29,6 +31,12 @@ public class CalendarServiceTest {
 	@Autowired
 	private CalendarService calendarService;	
 
+	@Autowired
+	private PlatformTransactionManager transactionManager;
+	
+	@Autowired
+	private EventDao eventDao;
+	
 	private CalendarUser[] calendarUsers = null;
 	private Event[] events = null;
 	private EventAttendee[] eventAttentees = null;
@@ -116,8 +124,10 @@ public class CalendarServiceTest {
 	
 	@Test
 	public void upgradeAllOrNothing() throws Exception{
-		CalendarService testCalendarService = new TestCalendarService(events[3].getId());
-				
+		TestCalendarService testCalendarService = new TestCalendarService(events[3].getId());
+		testCalendarService.setTransactionManager(this.transactionManager);
+		testCalendarService.setEventDao(this.eventDao);
+		
 		try {
 			testCalendarService.upgradeEventLevels();
 			fail("TestUserServiceException expected");

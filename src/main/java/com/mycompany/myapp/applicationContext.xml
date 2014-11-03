@@ -18,6 +18,7 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 	
+	
 	<!--  
 	<bean id="calendarUserDao" class="com.mycompany.myapp.dao.JdbcCalendarUserDao">
 		<property name="dataSource" ref="dataSource" />
